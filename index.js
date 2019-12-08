@@ -86,19 +86,19 @@
         }
         switch (indices[i]) {
           case a:
-            vertices.push(0.0);
+            vertices.push((a - 2) * 0.125);
             vertices.push(0.0);
             break;
           case b:
-            vertices.push(0.0);
+            vertices.push((a - 2) * 0.125);
             vertices.push(1.0);
             break;
           case c:
-            vertices.push(1.0);
+            vertices.push((a - 1) * 0.125);
             vertices.push(1.0);
             break;
           case d:
-            vertices.push(1.0);
+            vertices.push((a - 1) * 0.125);
             vertices.push(0.0);
             break;
         
@@ -506,28 +506,24 @@
                   new Uint8Array([0, 0, 255, 255]));
     // Asynchronously load an image
     var image = new Image();
-    image.src = "images/1.bmp";
+    image.src = "images/1.jpg";
     image.addEventListener('load', function() {
-    // Now that the image has loaded make copy it to the texture.
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA,gl.UNSIGNED_BYTE, image);
-
-    // Check if the image is a power of 2 in both dimensions.
-    if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-       // Yes, it's a power of 2. Generate mips.
-       gl.generateMipmap(gl.TEXTURE_2D);
-    } else {
-       // No, it's not a power of 2. Turn of mips and set wrapping to clamp to edge
-       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    }
-  });
-
+      // Now that the image has loaded make copy it to the texture.
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA,gl.UNSIGNED_BYTE, image);
+      if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+        // Yes, it's a power of 2. Generate mips.
+        gl.generateMipmap(gl.TEXTURE_2D);
+     } else {
+        // No, it's not a power of 2. Turn of mips and set wrapping to clamp to edge
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+     }
+    });
     function isPowerOf2(value) {
       return (value & (value - 1)) === 0;
     }
-
     render();
   }
 })();
